@@ -7,6 +7,7 @@ using TMPro;
 public class ManagerScript : MonoBehaviour
 {
     public GameObject player;
+    public new Camera camera;
     public GameObject zombiePrefab;
     private Vector3 zombiePos;
     public Vector2 zombieRange;
@@ -15,12 +16,21 @@ public class ManagerScript : MonoBehaviour
     public int waveNumber;
     public Text waveText;
     public GameObject waveTextObject;
+    public GameObject cameraControl;
+
+    CameraController cameraScript;
+    playerScript pScript;
+    
+
+    
     // Start is called before the first frame update
     void Start()
     {
-       
+        CameraController cameraScript = player.transform.GetComponentInChildren<CameraController>();
+        playerScript pScript = player.transform.GetComponent<playerScript>();
         waveCall();
     }
+    //poo
 
     void waveCall()
     {
@@ -39,9 +49,15 @@ public class ManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerScript pScript = player.transform.GetComponent<playerScript>();
         if(GameObject.Find("Zombie(Clone)") == null)
         {
             waveCall();
+        }
+
+        if(pScript.alive == false)
+        {
+            cameraControl.SetActive(false);
         }
     }
 
@@ -52,8 +68,8 @@ public class ManagerScript : MonoBehaviour
     Vector3 randomPos()
     {
         
-        float rX = Random.Range(zombieNoGo.x, zombieRange.x);
-        float rZ  = Random.Range(zombieNoGo.y, zombieRange.y);
+        float rX = Random.Range(zombieRange.x, zombieNoGo.x);
+        float rZ  = Random.Range(zombieRange.y, zombieNoGo.y);
         side = Random.Range(-1, 1);
         if(side >= 0)
         {

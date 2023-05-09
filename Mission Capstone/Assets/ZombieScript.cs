@@ -71,7 +71,7 @@ public class ZombieScript : MonoBehaviour
     {
         if(playerDistance.magnitude < 2.5f)
         {
-            playerScript playerPerson = player.transform.GetComponentInChildren<playerScript>();
+            playerScript playerPerson = player.transform.GetComponent<playerScript>();
             playerPerson.takeDamage(zombieDamage);
         }
     }

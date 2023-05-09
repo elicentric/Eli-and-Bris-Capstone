@@ -5,13 +5,14 @@ using UnityEngine;
 public class playerScript : MonoBehaviour
 {
     public GameObject crosshair;
-    public GameObject deadText;
+    public GameObject deathScreen;
     public GameObject playerBody;
     public GameObject healthBar;
     public float healthBarScale;
     public float health = 100f;
     public bool alive = true;
-    Collider playerCollider;
+    public Quaternion target;
+    CharacterController cc;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +21,7 @@ public class playerScript : MonoBehaviour
         
         health = 100f;
         alive = true;
-        playerCollider = GetComponentInChildren<BoxCollider>();
+        cc = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
@@ -36,10 +37,14 @@ public class playerScript : MonoBehaviour
             healthBar.SetActive(false);
         }
         
-        if(alive == false && transform.rotation.eulerAngles.y < 90f)
+        if(alive == false)
         {
-            playerCollider.enabled = false; 
-            playerBody.transform.Rotate(10f * Time.deltaTime, 0f , 0f);
+            Quaternion target = Quaternion.Euler(-90f, 0, transform.rotation.eulerAngles.z);
+            cc.enabled = false; 
+            Physics.IgnoreLayerCollision(0,6, true);
+            transform.rotation = Quaternion.Slerp(transform.rotation, target,  Time.deltaTime);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             
         }
 
@@ -48,7 +53,7 @@ public class playerScript : MonoBehaviour
     public void takeDamage(float amount)
     {
         health -= amount;
-        if(health < 1f)
+        if(health < 0f)
         {
             alive = false;
             playerDeath();
@@ -58,6 +63,6 @@ public class playerScript : MonoBehaviour
     void playerDeath()
     {
         crosshair.SetActive(false);
-        deadText.SetActive(true);
+        deathScreen.SetActive(true);
     }
 }
