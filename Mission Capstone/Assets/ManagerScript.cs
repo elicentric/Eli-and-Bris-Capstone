@@ -40,7 +40,7 @@ public class ManagerScript : MonoBehaviour
             Instantiate(zombiePrefab, randomPos(), Quaternion.identity);
             i++;
         }
-        waveText.text = "Wave " + (waveNumber - 2);
+        waveText.text = "Wave " + (waveNumber - (waveNumber - 1));
         Invoke("noText", 5.0f);
         waveNumber++;
         

@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class playerScript : MonoBehaviour
 {
     public GameObject crosshair;
-    public GameObject deathScreen;
+    public GameObject frontTextObject;
+    public TextMeshProUGUI frontText;
     public GameObject playerBody;
     public GameObject healthBar;
     public float healthBarScale;
@@ -13,15 +16,19 @@ public class playerScript : MonoBehaviour
     public bool alive = true;
     public Quaternion target;
     CharacterController cc;
+    public GameObject deathScreen;
+    public TextMeshProUGUI scoreText;
+    public GameObject gun;
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        
+        Invoke("noText", 5.0f);
         health = 100f;
         alive = true;
         cc = GetComponent<CharacterController>();
+        
     }
 
     // Update is called once per frame
@@ -64,5 +71,14 @@ public class playerScript : MonoBehaviour
     {
         crosshair.SetActive(false);
         deathScreen.SetActive(true);
+        gun.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        
+    }
+
+    void noText()
+    {
+        frontText.text = " ";
     }
 }
